@@ -1,0 +1,8 @@
+# multiperiod.run
+
+model multiperiod.mod;
+data multiperiod.dat;
+option solver cplex;
+solve;
+display x,y,z,w;
+display cost;

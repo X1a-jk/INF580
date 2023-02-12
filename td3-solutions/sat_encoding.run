@@ -1,0 +1,6 @@
+model sat_encoding.mod;
+data sat_encoding.dat;
+option solver cplex;
+solve;
+display x;
+

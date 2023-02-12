@@ -1,0 +1,18 @@
+# demands.dat
+
+param Tmax := 4;
+param Lmax := 3;
+
+param d :=
+  1  9
+  2  5
+  3  7
+  4  9
+;
+
+param c :=
+  1  200
+  2  350
+  3  450
+;
+

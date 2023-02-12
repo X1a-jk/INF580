@@ -1,0 +1,14 @@
+# transportation.dat
+param Pmax := 2;
+param Qmax := 1;
+param a :=
+1 2.0
+2 2.0
+;
+param b :=
+1 1.0
+;
+param c :=
+1 1 1.0
+2 1 2.0
+;

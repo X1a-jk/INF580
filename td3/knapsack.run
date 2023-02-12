@@ -1,0 +1,14 @@
+# knapsack.run
+
+model knapsack.mod;
+#data knapsack.dat;
+#data knapsack_inf.dat;
+data rndknap.dat;
+option solver cplex;
+solve;
+
+printf "J =";
+for {j in V : x[j] > 0} {
+  printf " %d", j;
+}
+printf "\n";

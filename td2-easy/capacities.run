@@ -1,0 +1,14 @@
+# capacities.run
+
+model capacities.mod;
+data capacities.dat;
+option solver cplex;
+solve;
+for {i in L} {
+  printf "flows on link %d:", i;
+  for {j in F : x[i,j] > 0} {
+    printf " %d", j;
+  }
+  printf "\n";
+}
+display cost;

@@ -1,0 +1,18 @@
+# demands_again.dat
+
+param Tmax := 5;
+
+param d :=
+  1  6000
+  2  7000
+  3  8000
+  4  9500
+  5 11000
+;
+
+param sigma :=  50;
+param omega := 160;
+param gamma := 2000;
+param tau := 50;
+param delta := 1000;
+param p := 0.05;

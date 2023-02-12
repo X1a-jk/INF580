@@ -1,0 +1,96 @@
+#!/usr/bin/env ampl
+## the universal isometric embedding
+##   example: embed a weighted graph metric into \ell_infty
+param eps := 1e-5;
+
+## graph format description
+# vertices
+param n integer, > 0;
+set V := 1..n;
+# edges
+set E within {V,V};
+# graph weights
+param c{E} default 0;
+# dummy params just to be able to read the instance
+param Kdim;
+param I{E};
+
+## read the graph
+#data rndgph.dat;
+#data tiny_gph.dat;
+data tiny_gph0.dat;
+
+## compute all shortest paths with Floyd-Warshall's algorithm
+# the graph distance matrix
+param infty := 1e30;
+# initially, all path lengths are infinite (no paths)
+param GDM{V,V} default infty;
+# initialize diagonal path lengths to zero
+for {u in V} {
+  let GDM[u,u] := 0;
+}
+# adjacent vertices have path length c(edge)
+for {(u,v) in E} {
+  let GDM[u,v] := c[u,v];
+  let GDM[v,u] := c[u,v];
+}
+# now triangulate!
+param testdist default 0;
+for {u in V} {
+  for {v in V} {
+    for {w in V} {
+      let testdist := GDM[v,u] + GDM[u,w];
+      if GDM[v,w] > testdist then {
+        let GDM[v,w] := testdist;
+      }
+    }
+  }
+}
+
+## verify GDM symmetry
+for {u in V, v in V : u < v} {
+  if abs(GDM[u,v] - GDM[v,u]) > eps then {
+    printf "GDM[%d,%d] != GDM[%d,%d]\n", u,v, v,u;
+  }
+}
+
+## test triangle inequalities
+for {u in V, v in V, w in V} {
+  if GDM[v,u] + GDM[u,w] < GDM[v,w] - eps then {
+    printf "GDM[%d,%d] + GDM[%d,%d] < GDM[%d,%d]\n", v,u,u,w,v,w;
+  }
+}
+
+## now GDM is a metric matrix, we use universal embedding
+param x{V,1..n} default 0;
+# copy the metric to the vector set
+for {v in V} {
+  for {k in 1..n} {
+    let x[v,k] := GDM[v,k];
+  }
+}
+
+## output x to graph.uie
+printf "" > graph.uie;
+for {v in V} {
+  printf "x_%d =", v >> graph.uie;
+  for {k in 1..n} {
+    printf " %.2f", x[v,k] >> graph.uie;
+  }
+  printf "\n" >> graph.uie;
+}
+printf "univ isom emb written to graph.uie\n";
+
+## verify the DM of x is GDM
+param uvinftydist default 0;
+param err default 0;
+param sumerr default 0;
+for {u in V, v in V : u < v} {
+  let uvinftydist := max{k in 1..n} abs(x[u,k] - x[v,k]);
+  let err := abs(uvinftydist - GDM[u,v]);
+  if err >= eps then {
+    printf "%.2f %.2f\n",  uvinftydist, GDM[u,v];
+  }
+  let sumerr := sumerr + err;
+}
+printf "|DM-GDM| = %.2f\n", sumerr;

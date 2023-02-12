@@ -1,0 +1,14 @@
+# sat.run
+
+var x{1..2} binary;
+
+subject to con1: x[1] + x[2] >= 1;
+subject to con2: (1-x[1]) + x[2] >= 1;
+subject to con3: x[1] + (1-x[2]) >= 1;
+subject to con4: (1-x[1]) + (1-x[2]) >= 1;
+	
+option solver cplex;
+solve;
+display x, solve_result;
+
+

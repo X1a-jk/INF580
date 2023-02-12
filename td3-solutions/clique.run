@@ -1,0 +1,33 @@
+# clique.run
+model clique.mod;
+#model motzkinstraus.mod;
+#data clique.dat;
+data rndcliq.dat;
+option solver cplex;
+option cplex_options "mipdisplay=2";
+#option solver baron;
+#option baron_options "outlev=1 epsr=1e-3 prfreq=1e3"; # maxtime=60"; 
+solve;
+
+printf "C =";
+param clsize integer, default 0;
+for {j in V : x[j] > 0} {
+  printf " %d", j;
+  let clsize := clsize + 1;
+}
+printf "\n";
+
+# extra stuff for "playing with instances" slide on TD3
+print "OUTLABELS:2|E|/n^2,omega(G),CPU";
+printf "OUT:%.2f,%d,%.2f\n", (2*card(E)/n^2), clique_card, _ampl_time + _total_solve_time;
+## bash command
+# for i in 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 ; do ln -sf rndcliq-$i.dat rndcliq.dat ; ampl clique.run ; done > clique.log 2>&1 &
+## gnuplot command
+#set datafile separator comma
+#set term png
+#set output "clique.png"
+#plot "clique.csv" using 1:2:xtic(1) with lines title "omega(G)", "clique.csv" using 1:3:xtic(1) with lines title "CPU"
+
+## extra stuff for Motzkin-Straus formulation
+#display x;
+#printf "clique size = %d\n", clsize;

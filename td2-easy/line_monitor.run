@@ -1,0 +1,66 @@
+# smartgrid line monitoring (.run file)
+
+#model line_monitor-wrong.mod;
+model line_monitor.mod;
+
+data smartgrid_example.dat;
+
+option solver cplex;
+option cplex_options "mipdisplay=2";
+solve;
+
+# print out information at buses
+param t;
+for {u in V} {
+  let t := sum{d in D} ord(d)*x[d,u]; # device type order
+  if t > 0 then {
+    printf "device of type %s installed at node %s\n", member(t,D), u;
+  }
+}
+
+# print out information at lines
+param linecheck{E} binary, default 0;
+param redundant{E} integer, default 0;
+for {d in D, (u,v) in E} {
+  if y[d,u,v] > 0 then {
+    printf "line (%s,%s) monitored by device of type %s installed at %s\n", u,v,d,u;
+    let linecheck[u,v] := 1;
+    let redundant[u,v] := redundant[u,v] + 1;
+  }
+  if y[d,v,u] > 0 then {
+    printf "line (%s,%s) monitored by device of type %s installed at %s\n", u,v,d,v;
+    let linecheck[u,v] := 1;
+    let redundant[u,v] := redundant[u,v] + 1;
+  }
+} 
+printf "plan monitors %d lines over a total of %d\n", sum{(u,v) in E} linecheck[u,v], card(E);
+printf "lines with more than one monitoring nodes: %d\n", sum{(u,v) in E} if redundant[u,v] > 1 then 1 else 0;
+
+# show cost in MEUR
+display total_cost;
+
+# print a GraphViz file for easier scanning of the solution
+printf "# file written by line_monitor.run\n" > line_monitor.dot;
+printf "graph linemonitor {\n" >> line_monitor.dot;
+for {v in V} {
+  printf "  %s", v >> line_monitor.dot;
+  if bustype[v] == "gen" then {
+    printf "[shape=diamond" >> line_monitor.dot;
+  } else if bustype[v] == "con" then {
+    printf "[shape=box" >> line_monitor.dot;
+  } else if bustype[v] == "rep" then {
+    printf "[shape=ellipse" >> line_monitor.dot;
+  }
+  let t := sum{d in D} ord(d)*x[d,v]; # device type order
+  if t == 0 then {
+    printf "];" >> line_monitor.dot;
+  } else {
+    printf ',style=filled, fillcolor=red, xlabel="%s"];', member(t,D) >> line_monitor.dot;
+  }
+  printf "\n" >> line_monitor.dot;
+}
+for {(u,v) in E} {
+  printf "  %s -- %s;\n", u, v >> line_monitor.dot;
+}
+printf "}\n" >> line_monitor.dot;
+

@@ -1,0 +1,19 @@
+#!/usr/bin/env ampl
+
+## diet.run - solve an instance of the diet problem
+option presolve 0;
+
+param myZero := 1e-3;
+
+model diet.mod;
+data diet.dat;
+
+option solver cplex;
+option cplex_options "display=1"; #"baropt"
+solve;
+printf "x =";
+for {j in N : x[j] > myZero} {
+  printf " (%d,%.3f)", j, x[j];
+}
+printf "\n";
+display cost;

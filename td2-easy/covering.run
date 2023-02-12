@@ -1,0 +1,8 @@
+# covering.run
+
+model covering.mod;
+data covering.dat;
+option solver cplex;
+solve;
+display x,y;
+display cost;

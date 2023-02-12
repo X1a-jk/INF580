@@ -1,0 +1,13 @@
+# subsetsum.run
+
+model subsetsum.mod;
+data subsetsum.dat;
+#data subsetsum_inf.dat;
+option solver cplex;
+solve;
+
+printf "J =";
+for {j in N : x[j] > 0} {
+  printf " %d", j;
+}
+printf "\n";

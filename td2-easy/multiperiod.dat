@@ -1,0 +1,20 @@
+# multiperiod.dat
+
+# index set
+param Tmax := 3;
+
+# parameters
+param f :=
+  1  100
+  2  130
+  3  150
+;
+
+param p := 110;
+param d :=  15;
+param r :=  60;
+
+param cn := 300;
+param csub := 330;
+param cstore := 10;
+

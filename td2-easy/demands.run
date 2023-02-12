@@ -1,0 +1,10 @@
+# demands.run
+
+model demands.mod;
+data demands.dat
+option solver cplex;
+solve;
+display x;
+display cost;
+
+#expand > demands-flat.mod;

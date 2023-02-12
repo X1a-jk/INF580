@@ -1,0 +1,19 @@
+# hamiltonian.run
+
+#model hamiltonian.mod;
+model hamiltonian_exp.mod;
+
+
+data hamiltonian.dat;
+#data hamiltonian_inf.dat;
+let V := 1..n;
+
+option solver cplex;
+solve;
+
+printf "H =";
+for {(i,j) in A : x[i,j] > 0} {
+  printf " (%d,%d)", i,j;
+}
+printf "\n";
+print solve_result;

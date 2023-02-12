@@ -1,0 +1,11 @@
+model blending.mod;
+data blending.dat;
+
+option solver cplex;
+option cplex_options "mipdisplay=2";
+solve;
+
+display x;
+display gain;
+display mix_max;
+display mix_min;

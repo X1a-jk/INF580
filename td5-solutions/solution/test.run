@@ -1,0 +1,7 @@
+#!/usr/bin/env ampl
+# test.run
+model test.mod;
+data test.dat;
+option solver cplex;
+solve;
+display objfun;

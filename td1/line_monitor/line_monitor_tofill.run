@@ -1,0 +1,6 @@
+# line_monitor_tofill.run
+model line_monitor_tofill.mod;
+data smartgrid_example.dat;
+option solver cplex;
+solve;
+display x, y, cost;

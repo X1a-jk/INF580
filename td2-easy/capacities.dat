@@ -1,0 +1,17 @@
+# capacities.dat
+
+param n := 5;
+param Lmax := 2;
+
+param c :=
+  1  0.3
+  2  0.6
+  3  0.1
+  4  0.2
+  5  0.8
+;
+
+param : k p :=
+  1  1 1
+  2  2 1.3
+; 

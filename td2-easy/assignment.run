@@ -1,0 +1,16 @@
+# assignment.run
+model assignment.mod;
+data assignment.dat;
+option solver cplex;
+solve;
+for {i in M} {
+  printf "jobs(lengths) on machine %d:", i;
+  for {j in J : x[j,i] > 0} {
+    printf " %d(%.1f)", j, p[j];
+  }
+  printf "\n";
+}
+for {i in M} {
+  printf "work length on machine %d: %.1f\n", i, mu[i];
+}
+display makespan;

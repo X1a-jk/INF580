@@ -1,0 +1,9 @@
+# demands_again.run
+
+model demands_again.mod;
+data demands_again.dat;
+#option relax_integrality 1;
+option solver cplex;
+solve;
+display x,y,z;
+display cost;

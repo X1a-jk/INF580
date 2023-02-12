@@ -1,0 +1,8 @@
+# circlepacking.run
+
+model circlepacking.mod;
+option solver baron;
+option baron_options "outlev=1 epsr=1e-4 prfreq=1e3 maxtime=180";
+solve;
+display x;
+display crates;

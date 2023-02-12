@@ -1,0 +1,14 @@
+# clique.run
+model clique.mod;
+data clique.dat;
+option solver cplex;
+solve;
+
+printf "max clique is %d:", k;
+printf "\n";
+
+for {i in V} {
+  if x[i] == 1 then printf "%d in the clique", i;
+  if x[i] == 1 then printf "\n";
+}
+display k;

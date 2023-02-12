@@ -1,0 +1,15 @@
+# assignment.dat
+
+param n := 7;
+param m := 2;
+
+param p :=
+  1  5
+  2  7
+  3  2
+  4  3
+  5  11
+  6  6
+  7  1
+;
+

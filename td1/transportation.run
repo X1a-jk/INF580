@@ -1,0 +1,6 @@
+# transportation.run
+model transportation.mod;
+data transportation.dat;
+option solver cplex;
+solve;
+display x, cost;

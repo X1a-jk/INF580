@@ -1,0 +1,73 @@
+#!/usr/bin/env ampl
+# test connectedness of protein .dat graph
+
+## the protein graph format
+param Kdim integer, > 0;
+param n integer, > 0;
+set V := 1..n;
+set E within {V,V};
+param c{E};
+param I{E};
+
+## read the data
+data tiny_gph0.dat;
+#data tiny_gph.dat;
+#data rndgph.dat;
+
+## compute all shortest paths with Floyd-Warshall's algorithm
+# the graph distance matrix
+param infty := 1e30;
+# initially, all path lengths are infinite (no paths)
+param GDM{V,V} default infty;
+# initialize diagonal path lengths to zero
+for {u in V} {
+  let GDM[u,u] := 0;
+}
+# adjacent vertices have path length c(edge)
+for {(u,v) in E} {
+  let GDM[u,v] := c[u,v];
+  let GDM[v,u] := c[u,v];
+}
+# now triangulate!
+param testdist default 0;
+for {u in V} {
+  for {v in V} {
+    for {w in V} {
+      let testdist := GDM[v,u] + GDM[u,w];
+      if GDM[v,w] > testdist then {
+        let GDM[v,w] := testdist;
+      }
+    }
+  }
+}
+
+param isconnected binary default 1;
+for {u in V, v in V : u < v} {
+  if GDM[u,v] >= infty then {
+    let isconnected := 0;
+  }
+}
+
+if isconnected == 1 then {
+  printf "isconnected: graph is connected\n";
+} else {
+  printf "isconnected: graph is disconnected\n";
+}
+
+## if graph is disconnected, see if there are vertices with empty star
+# stars
+set N{V} within V;
+param emptystars binary, default 0;
+if isconnected == 0 then {
+  # fill stars
+  let {u in V} N[u] := {v in V : (u,v) in E or (v,u) in E};
+  for {v in V} {
+    if card(N[v]) == 0 then {
+      printf "isconnected: vertex %d has empty star\n", v;
+      let emptystars := 1;
+    }
+  }
+  if emptystars == 0 then {
+    printf "isconnected: it may suffice to relabel vertices to connect graph\n";
+  }
+}

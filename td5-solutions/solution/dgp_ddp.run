@@ -1,0 +1,7 @@
+
+model dgp_ddp.mod;
+data tiny_gph.dat;
+option solver cplex;
+solve;
+display push;
+

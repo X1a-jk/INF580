@@ -1,0 +1,95 @@
+# buses
+param : V : bustype :=
+  gen1  gen
+  gen2  gen
+  con1  con
+  con2  con
+  con3  con
+  con4  con
+  con5  con 
+  con6  con
+  con7  con 
+  con8  con
+  con9  con
+  con10 con
+  con11 con
+  con12 con
+  con13 con
+  con14 con
+  con15 con
+  con16 con
+  con17 con
+  con18 con
+  con19 con
+  con20 con
+  rep1  rep
+  rep2  rep
+  rep3  rep
+  rep4  rep
+  rep5  rep
+  rep6  rep
+  rep7  rep
+  rep8  rep
+  rep9  rep
+  rep10 rep
+  rep11 rep
+;
+
+# lines
+param : E : w := 
+  gen1 con1   1
+  gen1 con2   1
+  gen1 rep1   1
+  gen1 rep2   1
+  gen1 rep3   1
+  gen1 rep4   1
+  rep1 con3   1
+  rep1 con4   1
+  rep2 con5   1
+  rep2 con6   1
+  rep2 con7   1
+  rep3 con8   1
+  rep3 con9   1
+  rep4 con10  1
+  rep4 con11  1
+  rep4 con20  1
+  rep4 rep11  1
+  gen2 con20  1
+  gen2 rep5   1
+  gen2 rep6   1
+  gen2 rep7   1
+  rep5 con12  1
+  rep5 con13  1
+  rep5 con14  1
+  rep5 rep8   1
+  rep6 con15  1
+  rep6 con16  1
+  rep7 con17  1
+  rep7 con18  1
+  rep7 con19  1
+  rep7 rep9   1
+  rep8 rep10  1
+  rep3 rep10  1
+  rep10 gen2  1
+  rep8 con1   1 
+  rep8 con2   1
+  rep9 con5   1
+  rep9 con6   1
+  rep9 con7   1
+  rep10 con3  1
+  rep10 con4  1
+  rep11 con12 1
+  rep11 con13 1
+  rep11 con14 1
+  rep11 con15 1
+  rep11 con16 1
+;
+
+# monitoring devices
+param : D : devcost :=
+  devA  0.9
+  devB  0.5
+  devC  0.3
+  devD  0.2
+  devE  0.3
+;

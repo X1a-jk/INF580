@@ -1,0 +1,12 @@
+set M := 1..50;
+set N := 1..10;
+param c{N} default Uniform01();
+param A{M,N} default Uniform(0,1);
+param b{M} default Uniform(1,2);
+var x{N} >= 0;
+minimize f: sum{j in N} c[j]*x[j];
+subject to C{i in M}:
+  sum{j in N} A[i,j]*x[j] >= b[i];
+option solver cplex;
+solve;
+display x,f,solve_result;
